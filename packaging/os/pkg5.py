@@ -119,7 +119,12 @@ def ensure(module, state, packages):
     to_modify = filter(behaviour[state]['filter'], packages)
     if to_modify:
         rc, out, err = module.run_command(
-            ['pkg', behaviour[state]['subcommand'], '-q', '--'] + to_modify
+            [
+                'pkg', behaviour[state]['subcommand']
+            ]
+            + [
+                '-q', '--'
+            ] + to_modify
         )
         response['rc'] = rc
         response['results'].append(out)
@@ -133,12 +138,12 @@ def ensure(module, state, packages):
 
 def is_installed(module, package):
     rc, out, err = module.run_command(['pkg', 'list', '--', package])
-    return True if rc == 0 else False
+    return not bool(int(rc))
 
 
 def is_latest(module, package):
     rc, out, err = module.run_command(['pkg', 'list', '-u', '--', package])
-    return True if rc == 1 else False
+    return bool(int(rc))
 
 
 from ansible.module_utils.basic import *
