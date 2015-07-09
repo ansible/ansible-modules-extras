@@ -68,6 +68,7 @@ class HomebrewCask(object):
         \w                  # alphanumeric characters (i.e., [a-zA-Z0-9_])
         \s                  # spaces
         :                   # colons
+        .                   # dots
         {sep}               # the OS-specific path separator
         -                   # dashes
     '''.format(sep=os.path.sep)
@@ -75,12 +76,15 @@ class HomebrewCask(object):
     VALID_BREW_PATH_CHARS = r'''
         \w                  # alphanumeric characters (i.e., [a-zA-Z0-9_])
         \s                  # spaces
+        .                   # dots
         {sep}               # the OS-specific path separator
         -                   # dashes
     '''.format(sep=os.path.sep)
 
     VALID_CASK_CHARS = r'''
         \w                  # alphanumeric characters (i.e., [a-zA-Z0-9_])
+        .                   # dots
+        \+                  # plusses
         -                   # dashes
     '''
 
