@@ -74,9 +74,8 @@ EXAMPLES = '''
 # =======================================
 # text module support methods
 #
-import urllib, urllib2
-
 import base64
+import urllib
 
 
 def post_text(module, account_sid, auth_token, msg, from_number, to_number):
@@ -86,14 +85,16 @@ def post_text(module, account_sid, auth_token, msg, from_number, to_number):
 
     data = {'From':from_number, 'To':to_number, 'Body':msg}
     encoded_data = urllib.urlencode(data)
-    request = urllib2.Request(URI)
+
     base64string = base64.encodestring('%s:%s' % \
         (account_sid, auth_token)).replace('\n', '')
-    request.add_header('User-Agent', AGENT)
-    request.add_header('Content-type', 'application/x-www-form-urlencoded')
-    request.add_header('Accept', 'application/ansible')
-    request.add_header('Authorization', 'Basic %s' % base64string)
-    return urllib2.urlopen(request, encoded_data)
+
+    headers = {'User-Agent': AGENT,
+            'Content-type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json',
+            'Authorization': 'Basic %s' % base64string,
+            }
+    return fetch_url(module, URI, data=encoded_data, headers=headers)
 
 
 # =======================================
@@ -119,14 +120,15 @@ def main():
     from_number = module.params['from_number']
     to_number = module.params['to_number']
 
-    try:
-        response = post_text(module, account_sid, auth_token, msg, 
+    r, info = post_twilio_api(module, account_sid, auth_token, msg,
             from_number, to_number)
-    except Exception, e:
-        module.fail_json(msg="unable to send text message to %s" % to_number)
+    if info['status'] != 200:
+        module.fail_json(msg="unable to send message to %s" % to_number)
 
     module.exit_json(msg=msg, changed=False) 
 
 # import module snippets
 from ansible.module_utils.basic import *
-main()
+from ansible.module_utils.urls import *
+if __name__ == '__main__':
+    main()
