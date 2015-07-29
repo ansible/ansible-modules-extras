@@ -137,7 +137,7 @@ def main():
     state = module.params["state"]
     changed = False
 
-    # To use defaults values, keyword arguments must be absent, so 
+    # To use defaults values, keyword arguments must be absent, so
     # check which values are empty and don't include in the **kw
     # dictionary
     params_map = {
@@ -146,7 +146,7 @@ def main():
         "login_password":"password",
         "port":"port"
     }
-    kw = dict( (params_map[k], v) for (k, v) in module.params.iteritems() 
+    kw = dict( (params_map[k], v) for (k, v) in module.params.iteritems()
               if k in params_map and v != '' )
     try:
         db_connection = psycopg2.connect(database=db, **kw)
@@ -165,9 +165,9 @@ def main():
     try:
         if module.check_mode:
             if state == "absent":
-                changed = not db_exists(cursor, ext)
+                changed = not ext_exists(cursor, ext)
             elif state == "present":
-                changed = db_exists(cursor, ext)
+                changed = ext_exists(cursor, ext)
             module.exit_json(changed=changed,ext=ext)
 
         if state == "absent":
