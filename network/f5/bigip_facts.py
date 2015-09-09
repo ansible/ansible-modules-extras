@@ -1576,7 +1576,8 @@ def main():
             session = dict(type='bool', default=False),
             include = dict(type='list', required=True),
             filter = dict(type='str', required=False),
-        )
+        ),
+        supports_check_mode = True
     )
 
     if not bigsuds_found:
