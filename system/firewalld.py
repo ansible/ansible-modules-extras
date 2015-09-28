@@ -233,8 +233,9 @@ def main():
     rich_rule = module.params['rich_rule']
 
     if module.params['port'] != None:
-        port, protocol = module.params['port'].split('/')
-        if protocol == None:
+        try:
+            port, protocol = module.params['port'].split('/')
+        except ValueError:
             module.fail_json(msg='improper port format (missing protocol?)')
     else:
         port = None
