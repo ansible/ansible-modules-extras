@@ -130,11 +130,10 @@ def delete_group(zbx, group_id):
 
 def check_group(zbx, host_group):
     try:
-        result = zbx.hostgroup.exists(
-            {
-                'name': host_group
-            }
-        )
+        if zbx.get({'filter': {'name': group_name},'countOutput': True}):
+            result = True
+        else:
+            result = False
     except BaseException as e:
         return 1, None, str(e)
     return 0, result, None
