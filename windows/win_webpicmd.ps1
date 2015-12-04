@@ -21,6 +21,9 @@ $ErrorActionPreference = "Stop"
 # WANT_JSON
 # POWERSHELL_COMMON
 
+# temporary fix to keep this module working in 2.0. Needs parameter validation fixes to work in future versions
+Set-StrictMode -Off
+
 $params = Parse-Args $args;
 $result = New-Object PSObject;
 Set-Attr $result "changed" $false;

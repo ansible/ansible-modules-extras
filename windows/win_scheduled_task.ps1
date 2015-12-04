@@ -22,6 +22,9 @@ $ErrorActionPreference = "Stop"
 # WANT_JSON
 # POWERSHELL_COMMON
 
+# temporary fix to keep this module working in 2.0. Needs parameter validation fixes to work in future versions
+Set-StrictMode -Off
+
 $params = Parse-Args $args;
 $result = New-Object PSObject;
 Set-Attr $result "changed" $false;
@@ -40,6 +43,7 @@ if($state -eq "present") {
     $time = Get-Attr -obj $params -name time -failifempty $true -resultobj $result
     $user = Get-Attr -obj $params -name user -failifempty $true -resultobj $result
 }
+# TODO: StrictMode fix
 if ($params.days_of_week)
 {
     $days_of_week = $params.days_of_week
@@ -49,6 +53,7 @@ elseif ($frequency -eq "weekly")
     Fail-Json $result "missing required argument: days_of_week"
 }
 
+# TODO: StrictMode fix
 # Vars with defaults
 if ($params.enabled)
 {
@@ -58,6 +63,7 @@ else
 {
   $enabled = $true #default
 }
+# TODO: StrictMode fix
 if ($params.description)
 {
   $description = $params.description
@@ -66,6 +72,7 @@ else
 {
   $description = " "  #default
 }
+# TODO: StrictMode fix
 if ($params.path)
 {
   $path = "\{0}\" -f $params.path
@@ -76,6 +83,7 @@ else
 }
 
 # Optional vars
+# TODO: StrictMode fix
 if ($params.argument)
 {
   $argument = $params.argument

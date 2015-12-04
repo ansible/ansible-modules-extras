@@ -19,10 +19,14 @@
 # WANT_JSON
 # POWERSHELL_COMMON
 
+# temporary fix to keep this module working in 2.0. Needs parameter validation fixes to work in future versions
+Set-StrictMode -Off
+
 $params = Parse-Args $args;
 $result = New-Object PSObject;
 Set-Attr $result "changed" $false;
 
+# TODO: StrictMode fix
 If ($params.state) {
     $state = $params.state.ToString().ToLower()
     If (($state -ne 'present') -and ($state -ne 'absent') ) {
@@ -32,6 +36,7 @@ If ($params.state) {
     $state = 'present'
 }
 
+# TODO: StrictMode fix
 If ($params.name)
 {
     $name = $params.name
@@ -41,6 +46,7 @@ If ($params.name)
 
 $value = $params.value
 
+# TODO: StrictMode fix
 If ($params.level) {
     $level = $params.level.ToString().ToLower()
     If (( $level -ne 'machine') -and ( $level -ne 'user' ) -and ( $level -ne 'process')) {

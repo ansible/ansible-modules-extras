@@ -21,6 +21,9 @@
 # WANT_JSON
 # POWERSHELL_COMMON
 
+# temporary fix to keep this module working in 2.0. Needs parameter validation fixes to work in future versions
+Set-StrictMode -Off
+
 $params = Parse-Args $args;
 
 # Name parameter
@@ -40,18 +43,22 @@ $binding_parameters = New-Object psobject @{
   Name = $name
 };
 
+# TODO: StrictMode fix
 If ($params.host_header) {
   $binding_parameters.HostHeader = $params.host_header
 }
 
+# TODO: StrictMode fix
 If ($params.protocol) {
   $binding_parameters.Protocol = $params.protocol
 }
 
+# TODO: StrictMode fix
 If ($params.port) {
   $binding_parameters.Port = $params.port
 }
 
+# TODO: StrictMode fix
 If ($params.ip) {
   $binding_parameters.IPAddress = $params.ip
 }

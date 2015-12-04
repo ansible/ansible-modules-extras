@@ -18,9 +18,11 @@
  
 # WANT_JSON
 # POWERSHELL_COMMON
- 
+
 # win_acl module (File/Resources Permission Additions/Removal)
- 
+
+# temporary fix to keep this module working in 2.0. Needs parameter validation fixes to work in future versions
+Set-StrictMode -Off
  
 #Functions
 Function UserSearch
@@ -87,7 +89,8 @@ $result = New-Object psobject @{
     win_acl = New-Object psobject
     changed = $false
 }
- 
+
+# TODO: StrictMode fix
 If ($params.path) {
     $path = $params.path.toString()
  
@@ -98,7 +101,8 @@ If ($params.path) {
 Else {
     Fail-Json $result "missing required argument: path"
 }
- 
+
+# TODO: StrictMode fix
 If ($params.user) {
     $user = UserSearch -AccountName ($Params.User)
  
@@ -121,7 +125,8 @@ ElseIf ($params.type -eq "deny") {
 Else {
     Fail-Json $result "missing required argument: type. specify whether to allow or deny the specified rights."
 }
- 
+
+# TODO: StrictMode fix
 If ($params.inherit) {
     # If it's a file then no flags can be set or an exception will be thrown
     If (Test-Path -Path $path -PathType Leaf) {
@@ -140,21 +145,23 @@ Else {
         $inherit = "ContainerInherit, ObjectInherit"
     }
 }
- 
+
+# TODO: StrictMode fix
 If ($params.propagation) {
     $propagation = $params.propagation.toString()
 }
 Else {
     $propagation = "None"
 }
- 
+
+# TODO: StrictMode fix
 If ($params.rights) {
     $rights = $params.rights.toString()
 }
 Else {
     Fail-Json $result "missing required argument: rights"
 }
- 
+
 If ($params.state -eq "absent") {
     $state = "remove"
 }

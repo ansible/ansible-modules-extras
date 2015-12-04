@@ -19,6 +19,9 @@
 # WANT_JSON
 # POWERSHELL_COMMON
 
+# temporary fix to keep this module working in 2.0. Needs parameter validation fixes to work in future versions
+Set-StrictMode -Off
+
 $params = Parse-Args $args;
 
 $result = New-Object psobject @{
@@ -26,6 +29,7 @@ $result = New-Object psobject @{
     changed = $false
 }
 
+# TODO: StrictMode fix
 If ($params.creates) {
     If (Test-Path $params.creates) {
         Exit-Json $result "The 'creates' file or directory already exists."
@@ -33,6 +37,7 @@ If ($params.creates) {
 
 }
 
+# TODO: StrictMode fix
 If ($params.src) {
     $src = $params.src.toString()
 
