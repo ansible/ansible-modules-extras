@@ -26,7 +26,7 @@ short_description: Manage LXC Containers
 version_added: 1.8.0
 description:
   - Management of LXC containers
-author: Kevin Carter
+author: "Kevin Carter (@cloudnull)"
 options:
     name:
         description:
@@ -124,7 +124,7 @@ options:
         description:
           - Path the save the archived container. If the path does not exist
             the archive method will attempt to create it.
-        default: /tmp
+        default: null
     archive_compression:
         choices:
           - gzip
@@ -425,13 +425,8 @@ def create_script(command):
     import subprocess
     import tempfile
 
-    # Ensure that the directory /opt exists.
-    if not path.isdir('/opt'):
-        os.mkdir('/opt')
-
-    # Create the script.
-    script_file = path.join('/opt', '.lxc-attach-script')
-    f = open(script_file, 'wb')
+    (fd, script_file) = tempfile.mkstemp(prefix='lxc-attach-script')
+    f = os.fdopen(fd, 'wb')
     try:
         f.write(ATTACH_TEMPLATE % {'container_command': command})
         f.flush()
@@ -439,18 +434,13 @@ def create_script(command):
         f.close()
 
     # Ensure the script is executable.
-    os.chmod(script_file, 0755)
-
-    # Get temporary directory.
-    tempdir = tempfile.gettempdir()
+    os.chmod(script_file, 0700)
 
     # Output log file.
-    stdout = path.join(tempdir, 'lxc-attach-script.log')
-    stdout_file = open(stdout, 'ab')
+    stdout_file = os.fdopen(tempfile.mkstemp(prefix='lxc-attach-script-log')[0], 'ab')
 
     # Error log file.
-    stderr = path.join(tempdir, 'lxc-attach-script.err')
-    stderr_file = open(stderr, 'ab')
+    stderr_file = os.fdopen(tempfile.mkstemp(prefix='lxc-attach-script-err')[0], 'ab')
 
     # Execute the script command.
     try:
@@ -1456,7 +1446,6 @@ def main():
             ),
             archive_path=dict(
                 type='str',
-                default='/tmp'
             ),
             archive_compression=dict(
                 choices=LXC_COMPRESSION_MAP.keys(),
@@ -1464,7 +1453,13 @@ def main():
             )
         ),
         supports_check_mode=False,
+        required_if = ([
+            ('archive', True, ['archive_path'])
+        ]),
     )
+
+    if module.params.get('archive') and module.params.get('archive_path') is None:
+        module.fail_json(msg='archive_path must be set to a directory path when archive is True')
 
     lv_name = module.params.get('lv_name')
     if not lv_name:
