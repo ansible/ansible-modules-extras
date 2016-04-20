@@ -1438,7 +1438,7 @@ def main():
                 type='str'
             ),
             container_log=dict(
-                choices=BOOLEANS,
+                type='bool',
                 default='false'
             ),
             container_log_level=dict(
@@ -1446,7 +1446,7 @@ def main():
                 default='INFO'
             ),
             archive=dict(
-                choices=BOOLEANS,
+                type='bool',
                 default='false'
             ),
             archive_path=dict(
@@ -1458,9 +1458,6 @@ def main():
             )
         ),
         supports_check_mode=False,
-        required_if = ([
-            ('archive', True, ['archive_path'])
-        ]),
     )
 
     if module.params.get('archive') and module.params.get('archive_path') is None:
