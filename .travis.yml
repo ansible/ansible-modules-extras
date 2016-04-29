@@ -12,7 +12,8 @@ addons:
 before_install:
   - git config user.name "ansible"
   - git config user.email "ansible@ansible.com"
-  - if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then git rebase $TRAVIS_BRANCH; fi;
+  - git fetch origin
+  - if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then git rebase origin $TRAVIS_BRANCH; fi;
 install:
   - pip install git+https://github.com/ansible/ansible.git@devel#egg=ansible
   - pip install git+https://github.com/sivel/ansible-testing.git#egg=ansible_testing
