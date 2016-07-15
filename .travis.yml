@@ -15,7 +15,7 @@ before_install:
   - git fetch origin
   - if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then git rebase origin $TRAVIS_BRANCH; fi;
 install:
-  - pip install git+https://github.com/ansible/ansible.git@devel#egg=ansible
+  - pip install git+https://github.com/ansible/ansible.git@stable-2.1#egg=ansible
   - pip install git+https://github.com/sivel/ansible-testing.git#egg=ansible_testing
 script:
   - python2.4 -m compileall -fq -x 'cloud/|monitoring/zabbix.*\.py|/dnf\.py|/layman\.py|/maven_artifact\.py|clustering/(consul.*|znode)\.py|notification/pushbullet\.py|database/influxdb/influxdb.*\.py' .
