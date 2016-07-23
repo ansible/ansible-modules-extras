@@ -320,16 +320,16 @@ def main():
         if password is None and update_password == 'always':
             module.fail_json(msg='password parameter required when adding a user unless update_password is set to on_create')
 
-        uinfo = user_find(client, user, db_name)
-        if update_password != 'always' and uinfo:
-            password = None
-            if not check_if_roles_changed(uinfo, roles, db_name):
-                module.exit_json(changed=False, user=user)
-
-        if module.check_mode:
-            module.exit_json(changed=True, user=user)
-
         try:
+            uinfo = user_find(client, user, db_name)
+            if update_password != 'always' and uinfo:
+                password = None
+                if not check_if_roles_changed(uinfo, roles, db_name):
+                    module.exit_json(changed=False, user=user)
+
+            if module.check_mode:
+                module.exit_json(changed=True, user=user)
+
             user_add(module, client, db_name, user, password, roles)
         except OperationFailure, e:
             module.fail_json(msg='Unable to add or update user: %s' % str(e))
