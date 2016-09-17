@@ -210,7 +210,7 @@ def main():
 
             if use_max:
                 if value.isdigit() and actual_value.isdigit():
-                    new_value = max(int(value), int(actual_value))
+                    new_value = str(max(int(value), int(actual_value)))
                 elif actual_value_unlimited:
                     new_value = actual_value
                 else:
@@ -218,7 +218,7 @@ def main():
 
             if use_min:
                 if value.isdigit() and actual_value.isdigit():
-                    new_value = min(int(value), int(actual_value))
+                    new_value = str(min(int(value), int(actual_value)))
                 elif value_unlimited:
                     new_value = actual_value
                 else:
@@ -227,7 +227,7 @@ def main():
             # Change line only if value has changed
             if new_value != actual_value:
                 changed = True
-                new_limit = domain + "\t" + limit_type + "\t" + limit_item + "\t" + str(new_value) + new_comment + "\n"
+                new_limit = domain + "\t" + limit_type + "\t" + limit_item + "\t" + new_value + new_comment + "\n"
                 message = new_limit
                 nf.write(new_limit)
             else:
@@ -238,7 +238,7 @@ def main():
 
     if not found:
         changed = True
-        new_limit = domain + "\t" + limit_type + "\t" + limit_item + "\t" + str(new_value) + new_comment + "\n"
+        new_limit = domain + "\t" + limit_type + "\t" + limit_item + "\t" + new_value + new_comment + "\n"
         message = new_limit
         nf.write(new_limit)
 
