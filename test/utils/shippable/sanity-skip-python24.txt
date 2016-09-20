@@ -1,0 +1,9 @@
+/cloud/
+/clustering/consul.*.py
+/clustering/znode.py
+/database/influxdb/
+/monitoring/zabbix.*.py
+/notification/pushbullet.py
+/packaging/language/maven_artifact.py
+/packaging/os/dnf.py
+/packaging/os/layman.py
