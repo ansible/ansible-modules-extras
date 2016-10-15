@@ -347,7 +347,7 @@ def main():
   if not api_password:
     try:
       api_password = os.environ['PROXMOX_PASSWORD']
-    except KeyError, e:
+    except KeyError as e:
       module.fail_json(msg='You should set api_password param or use PROXMOX_PASSWORD environment variable')
 
   try:
@@ -355,7 +355,7 @@ def main():
     global VZ_TYPE
     VZ_TYPE = 'openvz' if float(proxmox.version.get()['version']) < 4.0 else 'lxc'
 
-  except Exception, e:
+  except Exception as e:
     module.fail_json(msg='authorization on proxmox cluster failed with exception: %s' % e)
 
   if state == 'present':
@@ -384,7 +384,7 @@ def main():
                       force = int(module.params['force']))
 
       module.exit_json(changed=True, msg="deployed VM %s from template %s"  % (vmid, module.params['ostemplate']))
-    except Exception, e:
+    except Exception as e:
       module.fail_json(msg="creation of %s VM %s failed with exception: %s" % ( VZ_TYPE, vmid, e ))
 
   elif state == 'started':
@@ -397,7 +397,7 @@ def main():
 
       if start_instance(module, proxmox, vm, vmid, timeout):
         module.exit_json(changed=True, msg="VM %s started" % vmid)
-    except Exception, e:
+    except Exception as e:
       module.fail_json(msg="starting of VM %s failed with exception: %s" % ( vmid, e ))
 
   elif state == 'stopped':
@@ -419,7 +419,7 @@ def main():
 
       if stop_instance(module, proxmox, vm, vmid, timeout, force = module.params['force']):
         module.exit_json(changed=True, msg="VM %s is shutting down" % vmid)
-    except Exception, e:
+    except Exception as e:
       module.fail_json(msg="stopping of VM %s failed with exception: %s" % ( vmid, e ))
 
   elif state == 'restarted':
@@ -434,7 +434,7 @@ def main():
       if ( stop_instance(module, proxmox, vm, vmid, timeout, force = module.params['force']) and
           start_instance(module, proxmox, vm, vmid, timeout) ):
         module.exit_json(changed=True, msg="VM %s is restarted" % vmid)
-    except Exception, e:
+    except Exception as e:
       module.fail_json(msg="restarting of VM %s failed with exception: %s" % ( vmid, e ))
 
   elif state == 'absent':
@@ -460,7 +460,7 @@ def main():
                            % proxmox_node.tasks(taskid).log.get()[:1])
 
         time.sleep(1)
-    except Exception, e:
+    except Exception as e:
       module.fail_json(msg="deletion of VM %s failed with exception: %s" % ( vmid, e ))
 
 # import module snippets
