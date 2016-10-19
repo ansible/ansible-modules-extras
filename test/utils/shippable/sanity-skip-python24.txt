@@ -12,3 +12,5 @@
 /remote_management/ipmi/
 /univention/
 /web_infrastructure/letsencrypt.py
+/infrastructure/foreman/
+/network/nmcli.py
