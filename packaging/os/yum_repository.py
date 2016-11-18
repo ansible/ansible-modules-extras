@@ -19,9 +19,9 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import ConfigParser
 import os
 from ansible.module_utils.pycompat24 import get_exception
+from ansible.module_utils.six.moves import configparser
 
 
 DOCUMENTATION = '''
@@ -468,7 +468,7 @@ class YumRepo(object):
     module = None
     params = None
     section = None
-    repofile = ConfigParser.RawConfigParser()
+    repofile = configparser.RawConfigParser()
 
     # List of parameters which will be allowed in the repo file output
     allowed_params = [
@@ -575,7 +575,7 @@ class YumRepo(object):
         if len(self.repofile.sections()):
             # Write data into the file
             try:
-                fd = open(self.params['dest'], 'wb')
+                fd = open(self.params['dest'], 'w')
             except IOError:
                 e = get_exception()
                 self.module.fail_json(
