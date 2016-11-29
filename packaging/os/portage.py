@@ -273,7 +273,7 @@ def emerge_packages(module, packages):
         'usepkgonly': '--usepkgonly',
         'usepkg': '--usepkg',
     }
-    for flag, arg in emerge_flags.iteritems():
+    for flag, arg in emerge_flags.items():
         if p[flag]:
             args.append(arg)
 
