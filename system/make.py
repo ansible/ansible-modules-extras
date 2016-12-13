@@ -67,7 +67,7 @@ RETURN = '''# '''
 
 
 def format_params(params):
-    return [k + '=' + str(v) for k, v in params.iteritems()]
+    return [k + '=' + str(v) for k, v in params.items()]
 
 
 def push_arguments(cmd, args):
