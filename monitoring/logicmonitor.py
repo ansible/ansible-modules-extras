@@ -1538,7 +1538,7 @@ class Host(LogicMonitor):
         if properties is not None and properties is not {}:
             self.module.debug("Properties hash exists")
             propnum = 0
-            for key, value in properties.iteritems():
+            for key, value in properties.items():
                 h["propName" + str(propnum)] = key
                 h["propValue" + str(propnum)] = value
                 propnum = propnum + 1
@@ -2030,7 +2030,7 @@ class Hostgroup(LogicMonitor):
         if properties != {}:
             self.module.debug("Properties hash exists")
             propnum = 0
-            for key, value in properties.iteritems():
+            for key, value in properties.items():
                 h["propName" + str(propnum)] = key
                 h["propValue" + str(propnum)] = value
                 propnum = propnum + 1
