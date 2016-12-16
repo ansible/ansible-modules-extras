@@ -45,22 +45,22 @@ options:
     description:
       - Update packages to the best version available (--update)
     required: false
-    default: null
-    choices: [ "yes" ]
+    default: no
+    choices: [ "yes", "no" ]
 
   deep:
     description:
       - Consider the entire dependency tree of packages (--deep)
     required: false
-    default: null
-    choices: [ "yes" ]
+    default: no
+    choices: [ "yes", "no" ]
 
   newuse:
     description:
       - Include installed packages where USE flags have changed (--newuse)
     required: false
-    default: null
-    choices: [ "yes" ]
+    default: no
+    choices: [ "yes", "no" ]
 
   changed_use:
     description:
@@ -68,8 +68,8 @@ options:
       - flags that the user has not enabled are added or removed
       - (--changed-use)
     required: false
-    default: null
-    choices: [ "yes" ]
+    default: no
+    choices: [ "yes", "no" ]
     version_added: 1.8
 
   oneshot:
@@ -412,7 +412,7 @@ def main():
             depclean=dict(default=False, type='bool'),
             quiet=dict(default=False, type='bool'),
             verbose=dict(default=False, type='bool'),
-            sync=dict(default=None, choices=['yes', 'web']),
+            sync=dict(default=None, choices=['yes', 'web', 'no']),
             getbinpkg=dict(default=False, type='bool'),
             usepkgonly=dict(default=False, type='bool'),
             usepkg=dict(default=False, type='bool'),
@@ -427,7 +427,7 @@ def main():
 
     p = module.params
 
-    if p['sync']:
+    if p['sync'] and p['sync'] != 'no':
         sync_repositories(module, webrsync=(p['sync'] == 'web'))
         if not p['package']:
             module.exit_json(msg='Sync successfully finished.')
