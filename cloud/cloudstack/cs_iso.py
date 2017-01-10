@@ -240,6 +240,8 @@ class AnsibleCloudStackIso(AnsibleCloudStack):
             self.result['changed'] = True
             if not self.module.check_mode:
                 res = self.cs.registerIso(**args)
+                if 'errortext' in res:
+                    self.module.fail_json(msg="Failed: '%s'" % res['errortext'])
                 iso = res['iso'][0]
         return iso
 
@@ -284,6 +286,9 @@ class AnsibleCloudStackIso(AnsibleCloudStack):
 
             if not self.module.check_mode:
                 res = self.cs.deleteIso(**args)
+                if 'errortext' in res:
+                    self.module.fail_json(msg="Failed: '%s'" % res['errortext'])
+                self.poll_job(res, 'iso')
         return iso
 
 
